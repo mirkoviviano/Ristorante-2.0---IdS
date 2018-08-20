@@ -6,7 +6,6 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../services/auth';
 import { ProfilePage } from '../pages/profile/profile';
-import { FirecloudService } from '../services/firecloud';
 
 @Component({
 	templateUrl: 'app.html'
@@ -24,8 +23,7 @@ export class MyApp {
 	constructor(app: App, platform: Platform,
 		menu: MenuController,
 		private statusBar: StatusBar,
-		private auth: AuthService,
-		private fireC: FirecloudService
+		private auth: AuthService
 	) {
 		this.menu = menu;
 		this.app = app;
