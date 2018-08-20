@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title> Create Profile</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label floating >First Name</ion-label>
+      <ion-input [(ngModel)]="profile.fName" ngDefaultControl type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating >Last Name</ion-label>
+      <ion-input [(ngModel)]="profile.lName" ngDefaultControl type="text"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button ion-button block (click)="createProfile(profile)">Create Profile</button>
+</ion-content>
