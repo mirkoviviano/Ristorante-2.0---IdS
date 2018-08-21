@@ -14,7 +14,7 @@ import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import { FIREBASE_CONFIG } from './app.firebase.config';
 import { LoginPage } from '../pages/login/login'; 
 import { AuthService } from '../services/auth';
-import { FirecloudService } from '../services/firecloud';
+// import { FirecloudService } from '../services/firecloud';
 import { SignupPage } from '../pages/signup/signup';
 import { ProfilePage } from '../pages/profile/profile';
 
@@ -49,7 +49,7 @@ import { ProfilePage } from '../pages/profile/profile';
 		{provide: ErrorHandler, useClass: IonicErrorHandler},
 		AngularFireAuth,
 		AuthService,
-		FirecloudService
+		// FirecloudService
 	]
 })
 export class AppModule {

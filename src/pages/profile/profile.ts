@@ -4,7 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Profile } from '../../models/profile';
 import * as firebase from 'firebase';
 import { AuthService } from '../../services/auth'; 
-import { FirecloudService } from '../../services/firecloud'; 
+// import { FirecloudService } from '../../services/firecloud'; 
 
 @IonicPage()
 @Component({
@@ -23,24 +23,24 @@ export class ProfilePage {
     public navCtrl: NavController, 
     public afAuth: AngularFireAuth,
     private auth: AuthService,
-    private fireC: FirecloudService
+    // private fireC: FirecloudService
   ) {
     this.db = firebase.firestore();
   }
   
   ionViewWillEnter(){ 
     this.afAuth.authState.subscribe(data => {
-      this.fireC.getUserInfo("profiles", data.uid.toString()).then((e) => {
-        this.profileData = e;
-      });
+      // this.fireC.getUserInfo("profiles", data.uid.toString()).then((e) => {
+      //   this.profileData = e;
+      // });
     });
   }
 
   createProfile(user){  
     this.afAuth.authState.subscribe(data => {
-      this.fireC.createProfile(user, data.uid.toString()).then((e) => {
-        this.profile = user;
-      });
+      // this.fireC.createProfile(user, data.uid.toString()).then((e) => {
+      //   this.profile = user;
+      // });
     });
   }
 

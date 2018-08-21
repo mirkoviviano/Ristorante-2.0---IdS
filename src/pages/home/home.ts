@@ -4,7 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Profile } from '../../models/profile';
 import * as firebase from 'firebase'; 
 import { AuthService } from '../../services/auth'; 
-import { FirecloudService } from '../../services/firecloud'; 
+// import { FirecloudService } from '../../services/firecloud'; 
 
 @Component({
   selector: 'page-home',
@@ -16,7 +16,7 @@ export class HomePage {
   constructor(
     private toast: ToastController,
     public  navCtrl: NavController,  
-    private fireC: FirecloudService,
+    // private fireC: FirecloudService,
     private afAuth: AngularFireAuth,
     private auth: AuthService,
     public navParams: NavParams
