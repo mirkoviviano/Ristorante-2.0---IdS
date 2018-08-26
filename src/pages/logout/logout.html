@@ -1,0 +1,18 @@
+<ion-header>
+	<ion-navbar>
+	  <button ion-button menuToggle>
+		<ion-icon name="menu"></ion-icon>
+	  </button>
+	  <ion-title>Logout</ion-title>
+	</ion-navbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-toolbar>
+        Are you sure to Logout from SmartConsuption?
+      </ion-toolbar>
+      <button ion-button block large (click)="logout()">
+        LOGOUT</button>
+      <button ion-button block large (click)="cancel()">
+        CANCEL</button>
+  </ion-content>

@@ -4,17 +4,19 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { AuthService } from '../../services/auth';
 import { SignupPage } from '../signup/signup';
+import { Events } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-login',
-  templateUrl: 'login.html',
+	selector: 'page-login',
+	templateUrl: 'login.html',
 })
 export class LoginPage {
 	loginForm: FormGroup;
 	loginError: string;
 
 	constructor(
+		public events: Events,
 		private navCtrl: NavController,
 		private auth: AuthService,
 		fb: FormBuilder
@@ -25,7 +27,7 @@ export class LoginPage {
 		});
 	}
 
-  login() {
+	login() {
 		let data = this.loginForm.value;
 
 		if (!data.email) {
@@ -38,15 +40,18 @@ export class LoginPage {
 		};
 		this.auth.signInWithEmail(credentials)
 			.then(
-				() => this.navCtrl.setRoot(HomePage),
+				() => {
+					this.events.publish('user:logged');
+					this.navCtrl.setRoot(HomePage)
+				},
 				error => this.loginError = error.message
 			);
-    }
+	}
 
-  signup(){
-    this.navCtrl.push(SignupPage);
-  }
+	signup() {
+		this.navCtrl.push(SignupPage);
+	}
 
-  
+
 
 }

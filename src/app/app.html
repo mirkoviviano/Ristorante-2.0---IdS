@@ -1,4 +1,4 @@
-<ion-menu id="leftMenu" [content]="content" type="overlay">
+<!-- <ion-menu id="leftMenu" [content]="content" type="overlay">
 	<ion-header>
 		<ion-toolbar>
 			<ion-title>Wallets</ion-title>
@@ -21,8 +21,24 @@
 
 </ion-menu>
 
-<ion-nav id="nav" [root]="rootPage" #content swipe-back-enabled="false"></ion-nav>
-
+<ion-nav id="nav" [root]="rootPage" #content swipe-back-enabled="false"></ion-nav> -->
+<ion-menu id="leftMenu" [content]="content" type="overlay">
+	<ion-header>
+	  <ion-toolbar>
+		<ion-title>Menu</ion-title>
+	  </ion-toolbar>
+	</ion-header>
+  
+	<ion-content>
+	  <ion-list>
+		<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+		  {{p.title}}
+		</button>
+	  </ion-list>
+	</ion-content>
+  
+  </ion-menu>
+	<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
 <!--
 	<ion-list-header *ngIf="auth.authenticated">{{auth.getEmail()}}</ion-list-header>
 		<ion-item *ngIf="auth.authenticated" (click)="profile()" >

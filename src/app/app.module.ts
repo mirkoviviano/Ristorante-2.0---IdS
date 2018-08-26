@@ -17,6 +17,7 @@ import { AuthService } from '../services/auth';
 // import { FirecloudService } from '../services/firecloud';
 import { SignupPage } from '../pages/signup/signup';
 import { ProfilePage } from '../pages/profile/profile';
+import { LogoutPage } from '../pages/logout/logout';
 
 @NgModule({
 	declarations: [
@@ -24,7 +25,8 @@ import { ProfilePage } from '../pages/profile/profile';
 		HomePage,
 		LoginPage,
 		SignupPage,
-		ProfilePage
+		ProfilePage,
+		LogoutPage
 	],
 	imports: [
 		NgxErrorsModule,
@@ -42,7 +44,8 @@ import { ProfilePage } from '../pages/profile/profile';
 		HomePage,
 		LoginPage,
 		SignupPage,
-		ProfilePage
+		ProfilePage,
+		LogoutPage
 	],
 	providers: [
 		StatusBar,
