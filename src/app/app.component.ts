@@ -5,6 +5,7 @@ import { App, MenuController, Nav, Platform } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../services/auth';
+
 import { ProfilePage } from '../pages/profile/profile';
 import { SignupPage } from '../pages/signup/signup';
 import { Events } from 'ionic-angular';
@@ -26,7 +27,7 @@ export class MyApp {
 	constructor(public events: Events, app: App, platform: Platform,
 		menu: MenuController,
 		private statusBar: StatusBar,
-		private auth: AuthService
+		private auth: AuthService,
 	) {
 		this.menu = menu;
 		this.app = app;

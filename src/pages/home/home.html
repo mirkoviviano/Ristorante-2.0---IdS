@@ -8,7 +8,16 @@
 </ion-header>
 
 <ion-content>
- Welcome {{profile}}
+  Welcome {{profile}}
 
- 
+  <!-- <ul>
+    <li >
+      <pre>{{ item | json }}</pre>
+    </li>
+  </ul> -->
+  <ion-list>
+    <button ion-item *ngFor="let item of items | async" (click)="alertDescrizione(item)">
+      {{item.nome}}
+    </button>  
+  </ion-list>
 </ion-content>

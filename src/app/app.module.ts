@@ -12,12 +12,15 @@ import { MyApp } from './app.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import { FIREBASE_CONFIG } from './app.firebase.config';
-import { LoginPage } from '../pages/login/login'; 
+import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../services/auth';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+
 // import { FirecloudService } from '../services/firecloud';
 import { SignupPage } from '../pages/signup/signup';
 import { ProfilePage } from '../pages/profile/profile';
 import { LogoutPage } from '../pages/logout/logout';
+import { RistorantiService } from '../services/ristoranti';
 
 @NgModule({
 	declarations: [
@@ -35,8 +38,9 @@ import { LogoutPage } from '../pages/logout/logout';
 		IonicModule.forRoot(MyApp),
 		AgmCoreModule.forRoot(),
 		AngularFireModule.initializeApp(FIREBASE_CONFIG),
-		AngularFireAuthModule
+		AngularFirestoreModule,
 		
+
 	],
 	bootstrap: [IonicApp],
 	entryComponents: [
@@ -49,9 +53,10 @@ import { LogoutPage } from '../pages/logout/logout';
 	],
 	providers: [
 		StatusBar,
-		{provide: ErrorHandler, useClass: IonicErrorHandler},
+		{ provide: ErrorHandler, useClass: IonicErrorHandler },
 		AngularFireAuth,
 		AuthService,
+		RistorantiService
 		// FirecloudService
 	]
 })
