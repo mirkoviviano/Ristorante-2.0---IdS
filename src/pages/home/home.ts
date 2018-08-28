@@ -83,6 +83,12 @@ export class HomePage {
           label: 'Orario',
           type: 'time'
         },
+        {
+          name: 'telefono',
+          placeholder: 'Telefono',
+          label: 'Telefono',
+          type: 'number'
+        },
       ],
       buttons: [
         {
@@ -90,6 +96,8 @@ export class HomePage {
           handler: (data) => {
             data.uid = this.uid;
             data.ristorante = Item.id;
+            data.accettato = false;
+            data.declinato = false;
             this.db.collection('prenotazioni').add(data)
           }
         },
