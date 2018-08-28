@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController, NavParams } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { Profile } from '../../models/profile';
-import * as firebase from 'firebase';
 import { AuthService } from '../../services/auth';
 // import { FirecloudService } from '../../services/firecloud'; 
 import { Events } from 'ionic-angular';
