@@ -61,7 +61,6 @@ export class HomePage {
   }
 
   alertDescrizione(Item) {
-    console.log(Item)
     const alert = this.alertCtrl.create({
       title: Item.nome,
       subTitle: Item.descrizione,
