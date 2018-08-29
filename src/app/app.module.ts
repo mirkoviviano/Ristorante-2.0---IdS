@@ -21,6 +21,7 @@ import { SignupPage } from '../pages/signup/signup';
 import { ProfilePage } from '../pages/profile/profile';
 import { LogoutPage } from '../pages/logout/logout';
 import { RistorantiService } from '../services/ristoranti';
+import { CodiceStaffPage } from '../pages/codice-staff/codice-staff';
 
 @NgModule({
 	declarations: [
@@ -29,7 +30,8 @@ import { RistorantiService } from '../services/ristoranti';
 		LoginPage,
 		SignupPage,
 		ProfilePage,
-		LogoutPage
+		LogoutPage,
+		CodiceStaffPage
 	],
 	imports: [
 		NgxErrorsModule,
@@ -49,7 +51,8 @@ import { RistorantiService } from '../services/ristoranti';
 		LoginPage,
 		SignupPage,
 		ProfilePage,
-		LogoutPage
+		LogoutPage,
+		CodiceStaffPage
 	],
 	providers: [
 		StatusBar,

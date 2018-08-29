@@ -10,6 +10,7 @@ import { ProfilePage } from '../pages/profile/profile';
 import { SignupPage } from '../pages/signup/signup';
 import { Events } from 'ionic-angular';
 import { LogoutPage } from '../pages/logout/logout';
+import { CodiceStaffPage } from '../pages/codice-staff/codice-staff';
 
 @Component({
 	templateUrl: 'app.html'
@@ -41,12 +42,15 @@ export class MyApp {
 			{ title: 'Signup', component: SignupPage, },
 			{ title: 'Profile', component: ProfilePage, }
 		];
-		//Listener se utente è loggato o no
+		//Listener se utente è loggato o no o direttore
 		events.subscribe('user:logged', () => {
 			this.logged();
 		});
 		events.subscribe('user:notLogged', () => {
 			this.notLogged();
+		});
+		events.subscribe('user:isDirettore', () => {
+			this.isDirettore();
 		});
 	}
 	logged() {
@@ -54,7 +58,7 @@ export class MyApp {
 		this.pages = [
 			{ title: 'Home', component: HomePage },
 			{ title: 'Logout', component: LogoutPage },
-
+			{ title: 'Profilo', component: ProfilePage }
 		];
 
 	}
@@ -64,6 +68,15 @@ export class MyApp {
 			{ title: 'Home', component: HomePage },
 			{ title: 'Login', component: LoginPage },
 			{ title: 'Signup', component: SignupPage, },
+		];
+	}
+
+	isDirettore() {
+		this.pages = []
+		this.pages = [
+			{ title: 'Home', component: HomePage },
+			{ title: 'Logout', component: LogoutPage },
+			{ title: 'Codice Staff', component: CodiceStaffPage }
 		];
 	}
 

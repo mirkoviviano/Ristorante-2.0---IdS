@@ -14,7 +14,8 @@ import { AlertController } from 'ionic-angular';
 })
 export class HomePage {
   profile: any;
-  uid : String;
+  uid: String;
+  user: any;
   public items: Observable<any[]>;
 
   constructor(
@@ -34,20 +35,27 @@ export class HomePage {
   ionViewWillEnter() {
     this.afAuth.authState.subscribe(data => {
       if (data && data.email && data.uid) {
-
-        this.items = this.db.collection('ristoranti').snapshotChanges().map(actions => {
-          return actions.map(a => {
-            const data = a.payload.doc.data() as Ristorante;
-            const id = a.payload.doc.id;
-            return { id, ...data };
-          });
+        this.user = this.db.collection('profiles', ref => ref.where('email', '==', data.email)).valueChanges();
+        this.user.subscribe(queriedItems => {
+          if (queriedItems[0].ruolo == "DIR")
+            this.events.publish('user:isDirettore');
+          else {
+            this.items = this.db.collection('ristoranti').snapshotChanges().map(actions => {
+              return actions.map(a => {
+                const data = a.payload.doc.data() as Ristorante;
+                const id = a.payload.doc.id;
+                return { id, ...data };
+              });
+            });
+          }
         });
+
         this.toast.create({
           message: 'Welcome ' + data.email,
           duration: 3000
         }).present();
         this.profile = data.email;
-        this.uid= data.uid;
+        this.uid = data.uid;
         this.events.publish('user:logged');
       } else {
         this.toast.create({
@@ -112,7 +120,13 @@ export class HomePage {
 }
 
 
-interface Ristorante{
-  nome:String;
-  descrizione:String;
+interface Ristorante {
+  nome: String;
+  descrizione: String;
+}
+
+interface Profilo {
+  email: String;
+  fName: String;
+  lName;
 }

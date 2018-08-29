@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Codice Staff</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Ruolo</ion-label>
+      <ion-select [(ngModel)]="ruolo">
+        <ion-option value="CAM">Cameriere</ion-option>
+        <ion-option value="CUO">Cuoco</ion-option>
+        <ion-option value="CAP">Caposala</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <button ion-button block outline (click)="generaCodice()">Genera Codice</button>
+    </ion-item>
+    <ion-item></ion-item>
+    <ion-item *ngIf="codiceGenerato == true">
+      <ion-label style="user-select: text;">{{codice}}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
