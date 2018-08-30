@@ -3,9 +3,9 @@ import { IonicPage, NavController, DateTime } from 'ionic-angular';
 import { AuthService } from '../../services/auth';
 import { Events } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { AlertController } from 'ionic-angular';
-import { Timestamp } from 'rxjs';
+import { Timestamp, Observable } from 'rxjs';
 var moment = require('moment')
 
 @IonicPage()
@@ -19,6 +19,8 @@ export class InserisciCodiceStaffPage {
     ruolo = '';
     vediRuolo = false;
     codice = '';
+    codiciStaff: Observable<CodiceStaff[]>;
+    arrayCodiciStaff: CodiceStaff[];
 
     constructor(
         public events: Events,
@@ -33,6 +35,21 @@ export class InserisciCodiceStaffPage {
                 this.user = this.db.collection('profiles', ref => ref.where('email', '==', data.email)).valueChanges();
             }
         });
+        this.codiciStaff = this.db
+            .collection('codice-staff')
+            .snapshotChanges()
+            .map(actions => {
+                return actions.map(a => {
+                    //Get document data
+                    const data = a.payload.doc.data() as CodiceStaff;
+
+                    //Get document id
+                    const id = a.payload.doc.id;
+
+                    //Use spread operator to add the id to the document data
+                    return { id, ...data };
+                });
+            });
     }
 
     ottieniRuolo() {
@@ -46,46 +63,49 @@ export class InserisciCodiceStaffPage {
         }
         else {
             var today = moment();
-            var doc = this.db.collection('codice-staff', ref => ref.where('codice', '==', this.codice)).valueChanges()
-            doc.subscribe(item => {
-                var expire_date = moment(item[0]['expire_date'].toDate());
-                if (moment(today).isAfter(expire_date) == false) {
-
-                    this.ruolo = item[0]['ruolo'];
-                    this.vediRuolo = true;
-                }
-                else {
-                    const alert = this.alertCtrl.create({
-                        title: "Error",
-                        message: "Codice scaduto",
-                        buttons: [{ text: 'Ok' }]
-                    });
-                    alert.present();
-                }
-            });
-            //Elimino il documento dalla collection
-            this.deleteTask();
+            this.codiciStaff.forEach(item => { //converting oberv in array
+                item.forEach(element => {
+                    if (element['codice'] == this.codice) {
+                        var expire_date = moment(element['expire_date'].toDate());
+                        if (moment(today).isAfter(expire_date) == false) {
+                            this.ruolo = element['ruolo'] as string;
+                            this.vediRuolo = true;
+                            this.deleteTask(element['id'])
+                        }
+                        else {
+                            const alert = this.alertCtrl.create({
+                                title: "Error",
+                                message: "Codice scaduto",
+                                buttons: [{ text: 'Ok' }]
+                            });
+                            alert.present();
+                        }
+                    }
+                })
+            })
         }
     }
-    deleteTask() {
-        this.db.collection('codice-staff').snapshotChanges().pipe(
-            d =>
-                d.map(actions => actions.map(a => {
-                    const data = a.payload.doc.data() ;
-                    console.log(data)
-                    const id = a.payload.doc.id;
-                    return { id, ...data };
-                }))
-        );
+
+    private CodiceStaffDoc: AngularFirestoreDocument<CodiceStaff>;
+    deleteTask(id) {
+        console.log(id)
+        this.CodiceStaffDoc = this.db.doc<CodiceStaff>(`codice-staff/${id}`);
+        this.CodiceStaffDoc.delete();
     }
+
+    // updateRuoloUtente(id,ruolo) {
+    //     this.itemDoc.update();
+    // }
+
 }
 
 
+interface Profilo { email: string; fName: string; lName: string; id_ristorante: String; ruolo: String; }
 
 
 interface CodiceStaff {
     codice: String;
-    expire_data: DateTime;
+    expire_data: Date;
     id_ristorante: String;
     ruolo: String;
 }
