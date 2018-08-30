@@ -37,6 +37,10 @@ export class HomePage {
       if (data && data.email && data.uid) {
         this.user = this.db.collection('profiles', ref => ref.where('email', '==', data.email)).valueChanges();
         this.user.subscribe(queriedItems => {
+          if(queriedItems[0].hasOwnProperty('ruolo')==false)
+          {
+            this.events.publish('user:isNotStaff');
+          }
           if (queriedItems[0].ruolo == "DIR")
             this.events.publish('user:isDirettore');
           else {
