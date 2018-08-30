@@ -6,6 +6,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { AlertController } from 'ionic-angular';
 import { Timestamp, Observable } from 'rxjs';
+import { elementAttribute } from '@angular/core/src/render3/instructions';
 var moment = require('moment')
 
 @IonicPage()
@@ -16,10 +17,12 @@ var moment = require('moment')
 export class InserisciCodiceStaffPage {
     ristorante_id: String;
     user: any;
+    mail: String;
     ruolo = '';
     vediRuolo = false;
     codice = '';
     codiciStaff: Observable<CodiceStaff[]>;
+    profili: Observable<Profilo[]>;
     arrayCodiciStaff: CodiceStaff[];
 
     constructor(
@@ -33,6 +36,7 @@ export class InserisciCodiceStaffPage {
         this.afAuth.authState.subscribe(data => {
             if (data && data.email && data.uid) {
                 this.user = this.db.collection('profiles', ref => ref.where('email', '==', data.email)).valueChanges();
+                this.mail = data.email;
             }
         });
         this.codiciStaff = this.db
@@ -42,6 +46,21 @@ export class InserisciCodiceStaffPage {
                 return actions.map(a => {
                     //Get document data
                     const data = a.payload.doc.data() as CodiceStaff;
+
+                    //Get document id
+                    const id = a.payload.doc.id;
+
+                    //Use spread operator to add the id to the document data
+                    return { id, ...data };
+                });
+            });
+        this.profili = this.db
+            .collection('profiles')
+            .snapshotChanges()
+            .map(actions => {
+                return actions.map(a => {
+                    //Get document data
+                    const data = a.payload.doc.data() as Profilo;
 
                     //Get document id
                     const id = a.payload.doc.id;
@@ -71,6 +90,7 @@ export class InserisciCodiceStaffPage {
                             this.ruolo = element['ruolo'] as string;
                             this.vediRuolo = true;
                             this.deleteTask(element['id'])
+                            this.updateRuoloUtente(this.ruolo)
                         }
                         else {
                             const alert = this.alertCtrl.create({
@@ -88,19 +108,32 @@ export class InserisciCodiceStaffPage {
 
     private CodiceStaffDoc: AngularFirestoreDocument<CodiceStaff>;
     deleteTask(id) {
-        console.log(id)
         this.CodiceStaffDoc = this.db.doc<CodiceStaff>(`codice-staff/${id}`);
         this.CodiceStaffDoc.delete();
     }
+    private ProfiloDoc: AngularFirestoreDocument<Profilo>;
+    updateRuoloUtente(ruolo) {
+        this.profili.forEach(item => {
+            item.forEach(elem => {
+                if (elem['email'] == this.mail) {
+                    this.ProfiloDoc = this.db.doc<Profilo>(`profiles/${elem['id']}`);
+                    this.ProfiloDoc.update({ ruolo: ruolo });
+                }
+            })
+        })
 
-    // updateRuoloUtente(id,ruolo) {
-    //     this.itemDoc.update();
-    // }
+    }
 
 }
 
 
-interface Profilo { email: string; fName: string; lName: string; id_ristorante: String; ruolo: String; }
+interface Profilo {
+    email: string;
+    fName: string;
+    lName: string;
+    id_ristorante: String;
+    ruolo: String;
+}
 
 
 interface CodiceStaff {
