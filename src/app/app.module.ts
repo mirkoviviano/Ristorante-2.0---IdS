@@ -23,6 +23,8 @@ import { LogoutPage } from '../pages/logout/logout';
 import { RistorantiService } from '../services/ristoranti';
 import { CodiceStaffPage } from '../pages/codice-staff/codice-staff';
 import { InserisciCodiceStaffPage } from '../pages/inserisci-codice-staff/inserisci-codice-staff';
+import { CreaProfiloPage } from '../pages/crea-profilo/crea-profilo';
+import { AggiungiRistorantePage } from '../pages/aggiungi-ristorante/aggiungi-ristorante';
 
 @NgModule({
 	declarations: [
@@ -33,7 +35,9 @@ import { InserisciCodiceStaffPage } from '../pages/inserisci-codice-staff/inseri
 		ProfilePage,
 		LogoutPage,
 		CodiceStaffPage,
-		InserisciCodiceStaffPage
+		InserisciCodiceStaffPage,
+		CreaProfiloPage,
+		AggiungiRistorantePage
 	],
 	imports: [
 		NgxErrorsModule,
@@ -42,9 +46,7 @@ import { InserisciCodiceStaffPage } from '../pages/inserisci-codice-staff/inseri
 		IonicModule.forRoot(MyApp),
 		AgmCoreModule.forRoot(),
 		AngularFireModule.initializeApp(FIREBASE_CONFIG),
-		AngularFirestoreModule,
-		
-
+		AngularFirestoreModule
 	],
 	bootstrap: [IonicApp],
 	entryComponents: [
@@ -55,7 +57,9 @@ import { InserisciCodiceStaffPage } from '../pages/inserisci-codice-staff/inseri
 		ProfilePage,
 		LogoutPage,
 		CodiceStaffPage,
-		InserisciCodiceStaffPage
+		InserisciCodiceStaffPage,
+		CreaProfiloPage,
+		AggiungiRistorantePage
 	],
 	providers: [
 		StatusBar,

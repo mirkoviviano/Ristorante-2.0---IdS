@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { NavController, ToastController, NavParams } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthService } from '../../services/auth';
-// import { FirecloudService } from '../../services/firecloud'; 
+// import { FirecloudService } from '../../services/firecloud';
 import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AlertController } from 'ionic-angular';
+import { CreaProfiloPage } from '../crea-profilo/crea-profilo';
 
 @Component({
   selector: 'page-home',
@@ -30,18 +31,18 @@ export class HomePage {
     public db: AngularFirestore
   ) {
 
-  }
+  } //xc9MDqwi2YP5QJrrHCuUhRoifRG3
 
   ionViewWillEnter() {
     this.afAuth.authState.subscribe(data => {
       if (data && data.email && data.uid) {
         this.user = this.db.collection('profiles', ref => ref.where('email', '==', data.email)).valueChanges();
         this.user.subscribe(queriedItems => {
-          if(queriedItems[0].hasOwnProperty('ruolo')==false)
-          {
+          if(queriedItems.length > 0 && [0].hasOwnProperty('ruolo') == false) {
             this.events.publish('user:isNotStaff');
           }
-          if (queriedItems[0].ruolo == "DIR")
+          if(queriedItems.length > 0 &&
+            queriedItems[0].ruolo == "DIR")
             this.events.publish('user:isDirettore');
           else {
             this.items = this.db.collection('ristoranti').snapshotChanges().map(actions => {
@@ -52,7 +53,13 @@ export class HomePage {
               });
             });
           }
-        });
+
+          /*if(queriedItems.length < 0){
+            console.log('no item in queriedItems-');
+          }*/
+
+        }
+      );
 
         this.toast.create({
           message: 'Welcome ' + data.email,
@@ -127,10 +134,4 @@ export class HomePage {
 interface Ristorante {
   nome: String;
   descrizione: String;
-}
-
-interface Profilo {
-  email: String;
-  fName: String;
-  lName;
 }

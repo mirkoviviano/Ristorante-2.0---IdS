@@ -1,24 +1,23 @@
 <ion-header>
+
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Profilo</ion-title>
+    <ion-title>Crea Profilo</ion-title>
   </ion-navbar>
+
 </ion-header>
 
 <ion-content>
   <ion-list>
     <ion-item>
-      <ion-label fixed>Nome</ion-label>
+      <ion-label fixed>First name</ion-label>
       <ion-input type="text" [(ngModel)]="profile.fName"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label fixed>Cognome</ion-label>
+      <ion-label fixed>Last name</ion-label>
       <ion-input type="text" [(ngModel)]="profile.lName"></ion-input>
     </ion-item>
     <ion-item>
-      <button ion-button block outline (click)="createProfile(profile)">Salva</button>
+      <button ion-button block outline (click)="createProfile(profile)">Crea profilo</button>
     </ion-item>
 
   </ion-list>

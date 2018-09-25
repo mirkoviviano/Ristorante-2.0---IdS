@@ -11,7 +11,7 @@ import { SignupPage } from '../pages/signup/signup';
 import { Events } from 'ionic-angular';
 import { LogoutPage } from '../pages/logout/logout';
 import { CodiceStaffPage } from '../pages/codice-staff/codice-staff';
-import { InserisciCodiceStaffPage } from '../pages/inserisci-codice-staff/inserisci-codice-staff';
+import { AggiungiRistorantePage } from '../pages/aggiungi-ristorante/aggiungi-ristorante';
 
 @Component({
 	templateUrl: 'app.html'
@@ -53,16 +53,14 @@ export class MyApp {
 		events.subscribe('user:isDirettore', () => {
 			this.isDirettore();
 		});
-		events.subscribe('user:isNotStaff', () => {
-			this.isNotStaff();
-		});
 	}
 	logged() {
 		this.pages = []
 		this.pages = [
 			{ title: 'Home', component: HomePage },
 			{ title: 'Logout', component: LogoutPage },
-			{ title: 'Profilo', component: ProfilePage }
+			{ title: 'Profilo', component: ProfilePage },
+			{ title: 'Aggiungi ristorante', component: AggiungiRistorantePage }
 		];
 
 	}
@@ -80,16 +78,8 @@ export class MyApp {
 		this.pages = [
 			{ title: 'Home', component: HomePage },
 			{ title: 'Logout', component: LogoutPage },
+			{ title: 'Profilo', component: ProfilePage },
 			{ title: 'Codice Staff', component: CodiceStaffPage }
-		];
-	}
-
-	isNotStaff() {
-		this.pages = []
-		this.pages = [
-			{ title: 'Home', component: HomePage },
-			{ title: 'Logout', component: LogoutPage },
-			{ title: 'Inserisci Codice', component: InserisciCodiceStaffPage }
 		];
 	}
 

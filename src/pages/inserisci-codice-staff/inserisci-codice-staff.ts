@@ -7,7 +7,7 @@ import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firesto
 import { AlertController } from 'ionic-angular';
 import { Timestamp, Observable } from 'rxjs';
 import { elementAttribute } from '@angular/core/src/render3/instructions';
-var moment = require('moment')
+import moment from 'moment';
 
 @IonicPage()
 @Component({

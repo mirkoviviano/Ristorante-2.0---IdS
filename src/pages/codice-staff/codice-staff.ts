@@ -4,7 +4,7 @@ import { AuthService } from '../../services/auth';
 import { Events } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
-var generator = require('generate-password-browser');
+import generator from 'generate-password-browser';
 
 @IonicPage()
 @Component({

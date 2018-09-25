@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Aggiungi ristorante</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label fixed>Nome</ion-label>
+      <ion-input type="text" [(ngModel)]="risto.nome"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Descrizione</ion-label>
+      <ion-input type="text" [(ngModel)]="risto.descrizione"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Indirizzo</ion-label>
+      <ion-input type="text" [(ngModel)]="risto.indirizzo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <button ion-button block outline (click)="addRistorante(risto)">Aggiungi ristorante</button>
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>

@@ -9,22 +9,15 @@ import { Timestamp, Observable } from 'rxjs';
 import { elementAttribute } from '@angular/core/src/render3/instructions';
 import moment from 'moment';
 
-
 @IonicPage()
 @Component({
-  selector: 'page-profile',
-  templateUrl: 'profile.html',
+  selector: 'page-aggiungi-ristorante',
+  templateUrl: 'aggiungi-ristorante.html',
 })
-
-export class ProfilePage {
-  user: any;
-  email: String;
-  firstname: string;
-  lastname: string;
-  profile: any = {};
+export class AggiungiRistorantePage {
+  email: string;
   userID: string;
-  fName: string;
-  lName: string;
+  risto: any = {};
 
   constructor(
     public events: Events,
@@ -41,6 +34,7 @@ export class ProfilePage {
             this.userID = data.uid.toString();
         }
     });
+
     this.profili = this.db
         .collection('profiles')
         .snapshotChanges()
@@ -58,38 +52,38 @@ export class ProfilePage {
         });
   }
 
-  ionViewDidLoad(){
-    this.user = this.db.collection('profiles', ref => ref.where('email', '==', this.email)).valueChanges();
-    this.fName = this.user.fName;
-    this.lName = this.user.lName;
+  addRistorante(risto) {
+    this.db.collection('ristoranti').add({
+        'nome': risto.nome,
+        'descrizione': risto.descrizione,
+        'indirizzo': risto.indirizzo,
+        'proprietario': this.userID
+    }).then(() => {
+      this.updateRuoloUtente("DIR");
+      this.toast.create({
+        message: 'Ristorante aggiunto',
+        duration: 3000
+      }).present();
+    })
+    .catch(() => {
+      this.toast.create({
+        message: 'Errore nell\'aggiungere il ristorante. Riprova',
+        duration: 3000
+      }).present();
+    });
   }
 
-  createProfile(profile) {
-        this.db.collection('profiles').doc(this.userID).set({
-            'fName': profile.fName,
-            'lName': profile.lName,
-            'email': this.email
-        }).then(() => {
-          this.toast.create({
-            message: 'Profilo aggiornato',
-            duration: 3000
-          }).present();
-        })
-        .catch(() => {
-          this.toast.create({
-            message: 'Errore nel salvataggio del profilo!',
-            duration: 3000
-          }).present();
-        });
+  private ProfiloDoc: AngularFirestoreDocument<Profilo>;
+  updateRuoloUtente(ruolo) {
+      this.profili.forEach(item => {
+          item.forEach(elem => {
+              if (elem['email'] == this.email) {
+                  this.ProfiloDoc = this.db.doc<Profilo>(`profiles/${elem['id']}`);
+                  this.ProfiloDoc.update({ 'ruolo': ruolo });
+              }
+          })
+      })
+
   }
 
-}
-
-
-
-
-interface Profilo {
-    fName: string;
-    lName: string;
-    ruolo: String;
 }
