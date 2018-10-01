@@ -79,7 +79,8 @@ export class MyApp {
 			{ title: 'Home', component: HomePage },
 			{ title: 'Logout', component: LogoutPage },
 			{ title: 'Profilo', component: ProfilePage },
-			{ title: 'Codice Staff', component: CodiceStaffPage }
+			{ title: 'Codice Staff', component: CodiceStaffPage },
+			{ title: 'Aggiungi ristorante', component: AggiungiRistorantePage }
 		];
 	}
 

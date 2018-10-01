@@ -25,6 +25,7 @@ import { CodiceStaffPage } from '../pages/codice-staff/codice-staff';
 import { InserisciCodiceStaffPage } from '../pages/inserisci-codice-staff/inserisci-codice-staff';
 import { CreaProfiloPage } from '../pages/crea-profilo/crea-profilo';
 import { AggiungiRistorantePage } from '../pages/aggiungi-ristorante/aggiungi-ristorante';
+import { EffettuaOrdiniPage } from '../pages/effettua-ordini/effettua-ordini';
 
 @NgModule({
 	declarations: [
@@ -37,7 +38,8 @@ import { AggiungiRistorantePage } from '../pages/aggiungi-ristorante/aggiungi-ri
 		CodiceStaffPage,
 		InserisciCodiceStaffPage,
 		CreaProfiloPage,
-		AggiungiRistorantePage
+		AggiungiRistorantePage,
+		EffettuaOrdiniPage
 	],
 	imports: [
 		NgxErrorsModule,
@@ -59,7 +61,8 @@ import { AggiungiRistorantePage } from '../pages/aggiungi-ristorante/aggiungi-ri
 		CodiceStaffPage,
 		InserisciCodiceStaffPage,
 		CreaProfiloPage,
-		AggiungiRistorantePage
+		AggiungiRistorantePage,
+		EffettuaOrdiniPage
 	],
 	providers: [
 		StatusBar,

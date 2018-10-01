@@ -20,4 +20,15 @@
       {{item.nome}}
     </button>  
   </ion-list>
+
+  <h2>Prenotazioni</h2>
+  <ion-list>
+    <ion-item ion-item *ngFor="let item of prenotazioni | async">
+      {{item.ristorante}} - {{item.accettato}}
+
+      <button ion-item *ngIf="item.accettato == true" (click)="makeOrdine(item)">
+        Ordina
+      </button>
+    </ion-item>
+  </ion-list>
 </ion-content>

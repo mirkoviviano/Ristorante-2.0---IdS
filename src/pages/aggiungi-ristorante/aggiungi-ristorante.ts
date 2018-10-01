@@ -18,6 +18,8 @@ export class AggiungiRistorantePage {
   email: string;
   userID: string;
   risto: any = {};
+  profili: Observable<Profilo[]>;
+
 
   constructor(
     public events: Events,
@@ -86,4 +88,11 @@ export class AggiungiRistorantePage {
 
   }
 
+}
+interface Profilo {
+    email: string;
+    fName: string;
+    lName: string;
+    id_ristorante: String;
+    ruolo: String;
 }

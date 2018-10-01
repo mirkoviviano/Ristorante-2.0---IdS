@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AlertController } from 'ionic-angular';
 import { CreaProfiloPage } from '../crea-profilo/crea-profilo';
+import { EffettuaOrdiniPage } from '../effettua-ordini/effettua-ordini';
 
 @Component({
   selector: 'page-home',
@@ -15,9 +16,11 @@ import { CreaProfiloPage } from '../crea-profilo/crea-profilo';
 })
 export class HomePage {
   profile: any;
-  uid: String;
+  uid: String; 
   user: any;
   public items: Observable<any[]>;
+  prenotazioni: any;
+  ristorante: any;
 
   constructor(
     public alertCtrl: AlertController,
@@ -68,6 +71,19 @@ export class HomePage {
         this.profile = data.email;
         this.uid = data.uid;
         this.events.publish('user:logged');
+
+
+        /* Vedi prenotazioni */
+        this.prenotazioni = this.db.collection('prenotazioni', ref => ref.where('uid', '==', data.uid)).snapshotChanges().map(actions => {
+          return actions.map(a => {
+            const data = a.payload.doc.data() as Prenotazione;
+            const id = a.payload.doc.id;
+            
+            return {id, ...data};
+          });
+        });
+
+
       } else {
         this.toast.create({
           message: 'Wrong credentials!',
@@ -128,10 +144,19 @@ export class HomePage {
     alert.present();
   }
 
+  makeOrdine(ristorante){
+    this.navCtrl.push(EffettuaOrdiniPage, {ristorante: ristorante});
+  }
+
 }
 
 
 interface Ristorante {
   nome: String;
   descrizione: String;
+}
+
+interface Prenotazione {
+  ristorante: String;
+  accettato: boolean;
 }

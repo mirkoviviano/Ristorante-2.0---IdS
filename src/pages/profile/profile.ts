@@ -25,6 +25,7 @@ export class ProfilePage {
   userID: string;
   fName: string;
   lName: string;
+  profili: Observable<Profilo[]>;
 
   constructor(
     public events: Events,
@@ -84,9 +85,6 @@ export class ProfilePage {
   }
 
 }
-
-
-
 
 interface Profilo {
     fName: string;

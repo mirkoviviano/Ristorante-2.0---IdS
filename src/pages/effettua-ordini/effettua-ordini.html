@@ -1,0 +1,43 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Effettua ordine</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <h1>Primi piatti</h1>
+    <ion-item *ngFor="let primo of primi | async" (click)="ordina(primo)">
+      {{primo.piatto}} {{primo.prezzo}} €
+    </ion-item>
+  </ion-list>
+
+<ion-list>
+  <h1>Secondi piatti</h1>
+  <ion-item *ngFor="let secondo of secondi | async" (click)="ordina(secondo)">
+      {{secondo.piatto}} {{secondo.prezzo}} €
+    </ion-item>
+</ion-list>
+
+<ion-list>
+  <h1>Bevande</h1>
+  <ion-item *ngFor="let bevanda of bevande | async" (click)="ordina(bevanda)">
+    {{bevanda.piatto}} {{bevanda.prezzo}} €
+  </ion-item>
+</ion-list>
+
+
+<h2>Ordine</h2>
+<ion-list>
+  <ion-item *ngFor="let o of ords" (click)="annulla(o)">
+    {{o.piatto}} - {{o.prezzo}} € 
+  </ion-item>
+  <ion-item>
+    Totale: {{totale}}
+    <button (click)="confermaOrdine()">Conferma</button>
+  </ion-item>
+</ion-list>
+</ion-content>
