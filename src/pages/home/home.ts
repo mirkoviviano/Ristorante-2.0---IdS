@@ -9,6 +9,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { AlertController } from 'ionic-angular';
 import { CreaProfiloPage } from '../crea-profilo/crea-profilo';
 import { EffettuaOrdiniPage } from '../effettua-ordini/effettua-ordini';
+import { EffettuaPrenotazionePage } from '../effettua-prenotazione/effettua-prenotazione';
 
 @Component({
   selector: 'page-home',
@@ -18,9 +19,13 @@ export class HomePage {
   profile: any;
   uid: String; 
   user: any;
-  public items: Observable<any[]>;
+  public ristoranti: Observable<any[]>;
   prenotazioni: any;
   ristorante: any;
+  isDirettore: boolean;
+  profileRole: any;
+  prenotazioniPendenti: Observable<any[]>;
+  ristoName: any;
 
   constructor(
     public alertCtrl: AlertController,
@@ -41,14 +46,30 @@ export class HomePage {
       if (data && data.email && data.uid) {
         this.user = this.db.collection('profiles', ref => ref.where('email', '==', data.email)).valueChanges();
         this.user.subscribe(queriedItems => {
+          this.profileRole = queriedItems[0].ruolo;
+
           if(queriedItems.length > 0 && [0].hasOwnProperty('ruolo') == false) {
             this.events.publish('user:isNotStaff');
           }
           if(queriedItems.length > 0 &&
-            queriedItems[0].ruolo == "DIR")
+            queriedItems[0].ruolo == "DIR"){
             this.events.publish('user:isDirettore');
-          else {
-            this.items = this.db.collection('ristoranti').snapshotChanges().map(actions => {
+            this.isDirettore = true;
+          
+          } else if(queriedItems.length > 0 && queriedItems[0].ruolo == "CAM") {
+              this.events.publish('user:isCameriere');
+              this.prenotazioniPendenti = this.db.collection('prenotazioni', ref => ref.where('accettato', '==', false)).snapshotChanges()
+                  .map(actions => {
+                    return actions.map( a => {
+                      const data = a.payload.doc.data() as Prenotazione;
+                      const id = a.payload.doc.id;
+
+                      return {id, ...data};
+                    });
+                  });
+
+          } else {
+            this.ristoranti = this.db.collection('ristoranti').snapshotChanges().map(actions => {
               return actions.map(a => {
                 const data = a.payload.doc.data() as Ristorante;
                 const id = a.payload.doc.id;
@@ -57,18 +78,20 @@ export class HomePage {
             });
           }
 
+          
+
           /*if(queriedItems.length < 0){
             console.log('no item in queriedItems-');
-          }*/
+          }*/ 
 
-        }
-      );
+        });
 
         this.toast.create({
           message: 'Welcome ' + data.email,
           duration: 3000
         }).present();
         this.profile = data.email;
+        
         this.uid = data.uid;
         this.events.publish('user:logged');
 
@@ -78,8 +101,14 @@ export class HomePage {
           return actions.map(a => {
             const data = a.payload.doc.data() as Prenotazione;
             const id = a.payload.doc.id;
+            const risto = data.ristorante.toString();
             
-            return {id, ...data};
+            /** Recupera nomi ristoranti */
+            this.ristorante = this.db.collection('ristoranti').doc(risto).valueChanges();
+            this.ristorante.subscribe(aa => {
+              data.ristoranteName = aa.nome; // funziona
+            });
+            return data;
           });
         });
 
@@ -93,59 +122,52 @@ export class HomePage {
     });
   }
 
-  alertDescrizione(Item) {
-    const alert = this.alertCtrl.create({
-      title: Item.nome,
-      subTitle: Item.descrizione,
+  test(){
+
+  }
+  
+  effettuaPrenotazione(ristorante) {
+    this.navCtrl.push(EffettuaPrenotazionePage, {ristorante: ristorante})
+  }
+
+  makeOrdine(ristorante, prenotazione){
+    this.navCtrl.push(EffettuaOrdiniPage, {ristorante: ristorante, prenotazione: prenotazione});
+  }
+
+  accettaPrenotazione(prenotazione){
+    let alert = this.alertCtrl.create({
+      title: 'Conferma prenotazione',
+      message: 'Vuoi confermare questa prenotazione?',
       inputs: [
         {
-          name: 'posti',
-          placeholder: 'Numero di posti',
+          name: 'tavolo',
+          placeholder: 'Numero tavolo',
           type: 'number'
-        },
-        {
-          name: 'data',
-          placeholder: 'Data',
-          label: 'Data',
-          type: 'date'
-        },
-        {
-          name: 'orario',
-          placeholder: 'Orario',
-          label: 'Orario',
-          type: 'time'
-        },
-        {
-          name: 'telefono',
-          placeholder: 'Telefono',
-          label: 'Telefono',
-          type: 'number'
-        },
+        }
       ],
       buttons: [
         {
-          text: 'Prenota',
-          handler: (data) => {
-            data.uid = this.uid;
-            data.ristorante = Item.id;
-            data.accettato = false;
-            data.declinato = false;
-            this.db.collection('prenotazioni').add(data)
+          text: 'Declina',
+          role: 'cancel',
+          handler: () => {
+            this.db.collection('prenotazioni').doc(prenotazione.id).update({
+              'declinato': true
+            });
           }
         },
         {
-          text: 'Annulla',
-          handler: (data) => {
-
+          text: 'Accetta',
+          handler: data => {
+            this.db.collection('prenotazioni').doc(prenotazione.id).update({
+              'tavolo': data.tavolo,
+              'accettato': true,
+              'declinato': false
+            });
           }
-        },
+        }
       ]
     });
     alert.present();
-  }
-
-  makeOrdine(ristorante){
-    this.navCtrl.push(EffettuaOrdiniPage, {ristorante: ristorante});
   }
 
 }
@@ -154,9 +176,11 @@ export class HomePage {
 interface Ristorante {
   nome: String;
   descrizione: String;
+  indirizzo: String;
 }
 
 interface Prenotazione {
   ristorante: String;
   accettato: boolean;
+  ristoranteName: String;
 }

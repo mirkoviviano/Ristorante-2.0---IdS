@@ -1,0 +1,21 @@
+<ion-header>
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>Visualizza Ordini</ion-title>
+    </ion-navbar>
+  </ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row *ngFor="let ordine of ordiniPendenti | async">
+      <ion-col>
+        <ion-item (click)="consegnaOrdine(ordine.id)">
+          {{ordine.piatto}}
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

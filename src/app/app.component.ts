@@ -12,6 +12,8 @@ import { Events } from 'ionic-angular';
 import { LogoutPage } from '../pages/logout/logout';
 import { CodiceStaffPage } from '../pages/codice-staff/codice-staff';
 import { AggiungiRistorantePage } from '../pages/aggiungi-ristorante/aggiungi-ristorante';
+import { VisualizzaRistorantiPage } from '../pages/visualizza-ristoranti/visualizza-ristoranti';
+import { VisualizzaOrdiniPage } from '../pages/visualizza-ordini/visualizza-ordini';
 
 @Component({
 	templateUrl: 'app.html'
@@ -23,7 +25,7 @@ export class MyApp {
 	private app;
 	private platform;
 	private menu: MenuController;
-
+ 
 	@ViewChild(Nav) nav: Nav;
 
 	constructor(public events: Events, app: App, platform: Platform,
@@ -53,6 +55,9 @@ export class MyApp {
 		events.subscribe('user:isDirettore', () => {
 			this.isDirettore();
 		});
+		events.subscribe('user:isCameriere', () => {
+			this.isCameriere();
+		});
 	}
 	logged() {
 		this.pages = []
@@ -80,7 +85,18 @@ export class MyApp {
 			{ title: 'Logout', component: LogoutPage },
 			{ title: 'Profilo', component: ProfilePage },
 			{ title: 'Codice Staff', component: CodiceStaffPage },
-			{ title: 'Aggiungi ristorante', component: AggiungiRistorantePage }
+			{ title: 'Aggiungi ristorante', component: AggiungiRistorantePage },
+			{ title: 'Visualizza ristoranti', component: VisualizzaRistorantiPage }	
+		];
+	}
+
+	isCameriere(){
+		this.pages = []
+		this.pages = [
+			{ title: 'Home', component: HomePage },
+			{ title: 'Logout', component: LogoutPage },
+			{ title: 'Profilo', component: ProfilePage },
+			{ title: 'Visualizza ordini', component: VisualizzaOrdiniPage }	
 		];
 	}
 

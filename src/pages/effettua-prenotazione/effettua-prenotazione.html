@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <h3>Ristorante {{ristorante.nome}}</h3>
+    <ion-item>
+      <ion-label fixed>Posti</ion-label>
+      <ion-input type="number" [(ngModel)]="prenotazione.posti"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Telefono</ion-label>
+      <ion-input type="text" [(ngModel)]="prenotazione.telefono"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Data</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="prenotazione.data"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Time</ion-label>
+      <ion-datetime displayFormat="HH:mm" [(ngModel)]="prenotazione.orario"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <button ion-button block outline (click)="effettuaPrenotazione(prenotazione)">Salva</button>
+    </ion-item>
+  </ion-list>
+</ion-content>

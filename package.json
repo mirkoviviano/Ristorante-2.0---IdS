@@ -36,6 +36,7 @@
     "moment": "^2.22.2",
     "rxjs": "6",
     "rxjs-compat": "6",
+    "stripe": "^6.12.1",
     "sw-toolbox": "3.6.0"
   },
   "devDependencies": {

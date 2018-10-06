@@ -23,6 +23,11 @@ export class EffettuaOrdiniPage {
   ords: any = [];
   totale: any = 0;
   profili: Observable<Profilo[]>;
+  consegnati: any;
+  inviati: any;
+  finalTotale: any = 0; 
+  prenotazione: any; 
+  getTotal: any;
 
   constructor(
     public events: Events,
@@ -35,48 +40,78 @@ export class EffettuaOrdiniPage {
     public db: AngularFirestore
   ) {
     this.ristorante = this.navParams.get('ristorante');
+    this.prenotazione = this.navParams.get('prenotazione');
+
     this.afAuth.authState.subscribe(data => {
       if (data && data.email && data.uid) {
         this.uid = data.uid;
         this.email = data.email;
+
+
+        this.profili = this.db
+          .collection('profiles')
+          .snapshotChanges()
+          .map(actions => {
+              return actions.map(a => {
+                  //Get document data
+                  const data = a.payload.doc.data() as Profilo;
+
+                  //Get document id
+                  const id = a.payload.doc.id;
+
+                  //Use spread operator to add the id to the document data
+                  return { id, ...data };
+              });
+          });
+
+        console.log(this.prenotazione.ristorante);
+        this.inviati = this.db.collection('ordini', ref => ref.where('uid', '==', this.uid) && ref.where('ristoranteID', '==', this.prenotazione.ristorante) && ref.orderBy('consegnato'))
+          .snapshotChanges().map(actions => {
+            return actions.map(a => {
+              const data = a.payload.doc.data() as Ordine;
+              const id = a.payload.doc.id;
+
+              return {id, ...data};
+            });
+          });
+
+        this.getTotal = this.db.collection('ordini', ref => ref.where('uid', '==', this.uid) && ref.where('ristoranteID', '==', this.prenotazione.ristorante))
+            .valueChanges();
+
+        this.getTotal.subscribe(ords => {
+          ords.forEach(ord => {
+            if(ord.consegnato == true){
+              this.calcTotale(ord.prezzo);
+            }
+          });
+        });
+                              
+        
       }
     });
-
-    this.profili = this.db
-        .collection('profiles')
-        .snapshotChanges()
-        .map(actions => {
-            return actions.map(a => {
-                //Get document data
-                const data = a.payload.doc.data() as Profilo;
-
-                //Get document id
-                const id = a.payload.doc.id;
-
-                //Use spread operator to add the id to the document data
-                return { id, ...data };
-            });
-        });
   }
 
   ionViewDidLoad() { 
     /** Prendi primi piatti */
-    this.primi = this.db.collection('menu', ref => ref.where('ristoranteID', '==', this.ristorante) && ref.where('categoria', '==', 'primi')).valueChanges();
+    this.primi = this.db.collection('menu', ref => ref.where('ristoranteID', '==', this.prenotazione.ristorante) && ref.where('categoria', '==', 'primi')).valueChanges();
     this.primi.subscribe(primi => {
       
     });
 
     /** Prendi secondi piatti */
-    this.secondi = this.db.collection('menu', ref => ref.where('ristoranteID', '==', this.ristorante) && ref.where('categoria', '==', 'secondi')).valueChanges();
+    this.secondi = this.db.collection('menu', ref => ref.where('ristoranteID', '==', this.prenotazione.ristorante) && ref.where('categoria', '==', 'secondi')).valueChanges();
     this.secondi.subscribe(secondi => {
       
     });
 
     /** Prendi bevande */
-    this.bevande = this.db.collection('menu', ref => ref.where('ristoranteID', '==', this.ristorante) && ref.where('categoria', '==', 'bevande')).valueChanges();
+    this.bevande = this.db.collection('menu', ref => ref.where('ristoranteID', '==', this.prenotazione.ristorante) && ref.where('categoria', '==', 'bevande')).valueChanges();
     this.bevande.subscribe(bevande => {
       
     });
+
+
+    
   }
 
   ordina(item){
@@ -85,14 +120,35 @@ export class EffettuaOrdiniPage {
       prezzo: item.prezzo,
       categoria: item.categoria
     }
-    this.ords.push(data); 
-    this.calcTotale(data.prezzo);
+    this.ords.push(data);
+    this.calcTotale(item.prezzo);
   }
-
   annulla(item){
     this.ords.splice(this.ords.indexOf(item), 1);
     this.calcTotaleMeno(item.prezzo);
   }
+
+  confermaOrdine(){
+    this.ords.forEach(ordine => {
+      this.db.collection('ordini').add({
+        uid: this.uid,
+        ristoranteID: this.prenotazione.ristorante,
+        categoria: ordine.categoria,
+        prezzo: ordine.prezzo,
+        piatto: ordine.piatto,
+        consegnato: false,
+        tavolo: this.prenotazione.tavolo
+      }).then(() => {
+        this.toast.create({
+          message: 'Ordine inviato',
+          duration: 3000
+        }).present();
+        this.ords = [];
+        this.totale = 0;
+      });
+    });
+  }
+
 
   calcTotale(data){
     return this.totale += parseFloat(data);
@@ -100,18 +156,6 @@ export class EffettuaOrdiniPage {
 
   calcTotaleMeno(data){
     return this.totale -= parseFloat(data);
-  }
-
-  confermaOrdine(){
-    var data = {
-      uid: this.uid,
-      ristoranteID: this.ristorante.ristorante,
-      piatti: this.ords,
-      totale: this.totale,
-      evaso: false,
-      consegnato: false
-    }
-    this.db.collection('ordini').add(data);
   }
 
 }
@@ -123,4 +167,10 @@ interface Profilo {
   ruolo: String;
 }
 
-
+interface Ordine {
+  ristoranteID: string;
+  totale: number;
+  uid: string; 
+  
+  consegnato: boolean;
+}

@@ -24,7 +24,13 @@
     <ion-item>
       <button ion-button block outline (click)="addRistorante(risto)">Aggiungi ristorante</button>
     </ion-item>
+  </ion-list>
 
+  I tuoi ristoranti
+  <ion-list *ngFor="let r of ristor | async">
+    <ion-item>
+      {{r.nome}} 
+    </ion-item>
   </ion-list>
 
 </ion-content>

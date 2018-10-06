@@ -30,14 +30,31 @@
 </ion-list>
 
 
-<h2>Ordine</h2>
+<h2>Riepilogo ordine</h2>
 <ion-list>
   <ion-item *ngFor="let o of ords" (click)="annulla(o)">
     {{o.piatto}} - {{o.prezzo}} € 
   </ion-item>
   <ion-item>
-    Totale: {{totale}}
-    <button (click)="confermaOrdine()">Conferma</button>
+    Totale: {{totale}} €
+    <button ion-button color="secondary" (click)="confermaOrdine()">Ordina</button>
   </ion-item>
 </ion-list>
+
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <h3>Ordini Inviati</h3>
+      <ion-item *ngFor="let ordine of inviati | async">
+          <p *ngIf="ordine.consegnato == true" style="color: red;">{{ordine.piatto}}</p>
+          <p *ngIf="ordine.consegnato == false">{{ordine.piatto}}</p>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <h3>Totale</h3>
+      <h4>{{totale}} €</h4>
+      <button ion-button (click)="pagaConto()">Paga ora</button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
 </ion-content>

@@ -15,7 +15,7 @@ import { FIREBASE_CONFIG } from './app.firebase.config';
 import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../services/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-
+import { Stripe } from 'stripe';
 // import { FirecloudService } from '../services/firecloud';
 import { SignupPage } from '../pages/signup/signup';
 import { ProfilePage } from '../pages/profile/profile';
@@ -26,6 +26,10 @@ import { InserisciCodiceStaffPage } from '../pages/inserisci-codice-staff/inseri
 import { CreaProfiloPage } from '../pages/crea-profilo/crea-profilo';
 import { AggiungiRistorantePage } from '../pages/aggiungi-ristorante/aggiungi-ristorante';
 import { EffettuaOrdiniPage } from '../pages/effettua-ordini/effettua-ordini';
+import { VisualizzaRistorantiPage } from '../pages/visualizza-ristoranti/visualizza-ristoranti';
+import { ModificaRistorantePage } from '../pages/modifica-ristorante/modifica-ristorante';
+import { VisualizzaOrdiniPage } from '../pages/visualizza-ordini/visualizza-ordini';
+import { EffettuaPrenotazionePage } from '../pages/effettua-prenotazione/effettua-prenotazione';
 
 @NgModule({
 	declarations: [
@@ -39,7 +43,11 @@ import { EffettuaOrdiniPage } from '../pages/effettua-ordini/effettua-ordini';
 		InserisciCodiceStaffPage,
 		CreaProfiloPage,
 		AggiungiRistorantePage,
-		EffettuaOrdiniPage
+		EffettuaOrdiniPage,
+		VisualizzaRistorantiPage,
+		ModificaRistorantePage,
+		VisualizzaOrdiniPage,
+		EffettuaPrenotazionePage
 	],
 	imports: [
 		NgxErrorsModule,
@@ -48,6 +56,7 @@ import { EffettuaOrdiniPage } from '../pages/effettua-ordini/effettua-ordini';
 		IonicModule.forRoot(MyApp),
 		AgmCoreModule.forRoot(),
 		AngularFireModule.initializeApp(FIREBASE_CONFIG),
+		//Stripe.setPublishableKey('pk_test_pgpkuOefvRjZ8SodibbfcIaR'),
 		AngularFirestoreModule
 	],
 	bootstrap: [IonicApp],
@@ -62,7 +71,11 @@ import { EffettuaOrdiniPage } from '../pages/effettua-ordini/effettua-ordini';
 		InserisciCodiceStaffPage,
 		CreaProfiloPage,
 		AggiungiRistorantePage,
-		EffettuaOrdiniPage
+		EffettuaOrdiniPage,
+		VisualizzaRistorantiPage,
+		ModificaRistorantePage,
+		VisualizzaOrdiniPage,
+		EffettuaPrenotazionePage
 	],
 	providers: [
 		StatusBar,

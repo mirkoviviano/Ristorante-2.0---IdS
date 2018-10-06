@@ -9,26 +9,40 @@
 
 <ion-content>
   Welcome {{profile}}
-  
-  <!-- <ul>
-    <li >
-      <pre>{{ item | json }}</pre>
-    </li>
-  </ul> -->
+
+  <h1 *ngIf="isDirettore == false">Ristoranti - Prenota</h1>
   <ion-list>
-    <button ion-item *ngFor="let item of items | async" (click)="alertDescrizione(item)">
-      {{item.nome}}
+    <button ion-item *ngFor="let ristorante of ristoranti | async" (click)="effettuaPrenotazione(ristorante)">
+      {{ristorante.nome}}
     </button>  
   </ion-list>
 
-  <h2>Prenotazioni</h2>
-  <ion-list>
-    <ion-item ion-item *ngFor="let item of prenotazioni | async">
-      {{item.ristorante}} - {{item.accettato}}
 
-      <button ion-item *ngIf="item.accettato == true" (click)="makeOrdine(item)">
-        Ordina
-      </button>
-    </ion-item>
-  </ion-list>
+
+  <h2 *ngIf="profileRole == ''">Prenotazioni</h2>
+  <ion-grid *ngIf="profileRole == 'CAM'">
+    <h2>Prenotazioni in attesa</h2>
+    <ion-row *ngFor="let prenotazione of prenotazioniPendenti | async">
+      <ion-col>
+        <ion-item (click)="accettaPrenotazione(prenotazione)">Prenotazione per {{prenotazione.posti}} in data {{prenotazione.data}} alle ore {{prenotazione.orario}}</ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row *ngFor="let prenotazione of prenotazioni | async">
+      <ion-col>
+        Ristorante: {{prenotazione.ristoranteName}}
+      </ion-col> 
+      <ion-col>
+        Data: {{prenotazione.data | date: 'dd/MM/yyyy'}} - Posti: {{prenotazione.posti}}
+      </ion-col>
+      
+      <ion-col>
+        <button *ngIf="prenotazione.accettato == true" ion-button color="secondary" (click)="makeOrdine(ristorante, prenotazione)">
+          Ordina
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

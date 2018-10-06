@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Modifica Ristorante</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <h3>Ristorante {{ristorante.nome}}</h3>
+    <ion-item>
+      <ion-label fixed>Nome</ion-label>
+      <ion-input type="text" [(ngModel)]="ristorante.nome"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Descrizione</ion-label>
+      <ion-input type="text" [(ngModel)]="ristorante.descrizione"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Indirizzo</ion-label>
+      <ion-input type="text"[(ngModel)]="ristorante.indirizzo"></ion-input> 
+    </ion-item>
+    <ion-item>
+      <button ion-button block outline (click)="modificaRistorante(ristorante)">Salva</button>
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <h3>Aggiungi menu</h3>
+    <ion-item>
+      <ion-label fixed>Categoria</ion-label>
+      <ion-select [(ngModel)]="piatto.categoria">
+        <ion-option value="primi">Primi</ion-option>
+        <ion-option value="secondo">Secondi</ion-option>
+        <ion-option value="bevande">Bevande</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Piatto</ion-label>
+      <ion-input type="text" [(ngModel)]="piatto.piatto"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Prezzo</ion-label>
+      <ion-input type="text" [(ngModel)]="piatto.prezzo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <button ion-button color="secondary" (click)="aggiungiPiatto(piatto)">Salva</button>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <h3>Elimina {{ristorante.nome}}</h3>
+    <ion-item>
+      <button ion-button color="danger" (click)="eliminaRistorante(ristorante)">Elimina ristorante</button>
+    </ion-item>
+  </ion-list>
+</ion-content>
