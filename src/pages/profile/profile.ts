@@ -42,7 +42,7 @@ export class ProfilePage {
         this.userID = data.uid.toString();
 
         this.profile = this.db.collection('profiles').doc(data.uid).valueChanges().subscribe(prof => {
-          console.log(prof);
+          this.profile = prof;
         });
       }
     });

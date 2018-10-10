@@ -63,7 +63,7 @@ export class HomePage {
             this.events.publish('user:isDirettore');
             this.isDirettore = true;
           
-          } else if(queriedItems.length > 0 && queriedItems[0].ruolo == "CAM") {
+          } else if(queriedItems.length > 0 && queriedItems[0].ruolo == "CAM" || queriedItems[0].ruolo == "CAP") {
               this.events.publish('user:isCameriere');
               this.prenotazioniPendenti = this.db.collection('prenotazioni', ref => ref.where('accettato', '==', false)).snapshotChanges()
                   .map(actions => {
