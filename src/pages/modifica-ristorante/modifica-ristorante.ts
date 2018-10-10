@@ -110,12 +110,14 @@ export class ModificaRistorantePage {
 
   private ProfiloDoc: AngularFirestoreDocument<Profilo>;
   licenzia(st) {
-    this.db.collection('profiles').doc(st.id).update({
-      id_ristorante: null,
-      ruolo: null
-    }).then(() => {
-      console.log('Licenziato');
-    });
+    if(st.ruolo != 'DIR'){
+      this.db.collection('profiles').doc(st.id).update({
+        id_ristorante: null,
+        ruolo: null
+      }).then(() => {
+        console.log('Licenziato');
+      });
+    }
   }
 
 }
