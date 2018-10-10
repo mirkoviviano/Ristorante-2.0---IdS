@@ -52,68 +52,68 @@ export class HomePage {
           
           if(queriedItems.length > 0){
             this.profileRole = queriedItems[0].ruolo;
-          }
           
-          if(queriedItems.length > 0 && queriedItems[0].ruolo == "USER") {
-            this.events.publish('user:isNotStaff');
-            this.isNotStaff = true;
-          }
-          if(queriedItems.length > 0 &&
-            queriedItems[0].ruolo == "DIR"){
-            this.events.publish('user:isDirettore');
-            this.isDirettore = true;
           
-          } else if(queriedItems.length > 0 && queriedItems[0].ruolo == "CAM" || queriedItems[0].ruolo == "CAP") {
-              this.events.publish('user:isCameriere');
-              this.prenotazioniPendenti = this.db.collection('prenotazioni', ref => ref.where('accettato', '==', false)).snapshotChanges()
-                  .map(actions => {
-                    return actions.map( a => {
-                      const data = a.payload.doc.data() as Prenotazione;
-                      const id = a.payload.doc.id;
-
-                      return {id, ...data};
-                    });
-                  });
-
-          } else {
-            this.ristoranti = this.db.collection('ristoranti').snapshotChanges().map(actions => {
-              return actions.map(a => {
-                const data = a.payload.doc.data() as Ristorante;
-                const id = a.payload.doc.id;
-                return { id, ...data };
-              });
-            });
-          }
-
-
-        });
-
-        this.toast.create({
-          message: 'Welcome ' + data.email,
-          duration: 3000
-        }).present();
-        this.profile = data.email;
-        
-        this.uid = data.uid;
-        this.events.publish('user:logged');
-
-
-        /* Vedi prenotazioni */
-        this.prenotazioni = this.db.collection('prenotazioni', ref => ref.where('uid', '==', data.uid)).snapshotChanges().map(actions => {
-          return actions.map(a => {
-            const data = a.payload.doc.data() as Prenotazione;
-            const id = a.payload.doc.id;
-            const risto = data.ristorante.toString();
+            if(queriedItems.length > 0 && queriedItems[0].ruolo == "USER") {
+              this.events.publish('user:isNotStaff');
+              this.isNotStaff = true;
+            }
+            if(queriedItems.length > 0 &&
+              queriedItems[0].ruolo == "DIR"){
+              this.events.publish('user:isDirettore');
+              this.isDirettore = true;
             
-            /** Recupera nomi ristoranti */
-            this.ristorante = this.db.collection('ristoranti').doc(risto).valueChanges();
-            this.ristorante.subscribe(aa => {
-              data.ristoranteName = aa.nome; // funziona
-            });
-            return data;
-          });
-        });
+            } else if(queriedItems.length > 0 && queriedItems[0].ruolo == "CAM" || queriedItems[0].ruolo == "CAP") {
+                this.events.publish('user:isCameriere');
+                this.prenotazioniPendenti = this.db.collection('prenotazioni', ref => ref.where('accettato', '==', false)).snapshotChanges()
+                    .map(actions => {
+                      return actions.map( a => {
+                        const data = a.payload.doc.data() as Prenotazione;
+                        const id = a.payload.doc.id;
 
+                        return {id, ...data};
+                      });
+                    });
+
+            } else {
+              this.ristoranti = this.db.collection('ristoranti').snapshotChanges().map(actions => {
+                return actions.map(a => {
+                  const data = a.payload.doc.data() as Ristorante;
+                  const id = a.payload.doc.id;
+                  return { id, ...data };
+                });
+              });
+            }
+          }
+
+          });
+
+          this.toast.create({
+            message: 'Welcome ' + data.email,
+            duration: 3000
+          }).present();
+          this.profile = data.email;
+          
+          this.uid = data.uid;
+          this.events.publish('user:logged');
+
+
+          /* Vedi prenotazioni */
+          this.prenotazioni = this.db.collection('prenotazioni', ref => ref.where('uid', '==', data.uid)).snapshotChanges().map(actions => {
+            return actions.map(a => {
+              const data = a.payload.doc.data() as Prenotazione;
+              const id = a.payload.doc.id;
+              const risto = data.ristorante.toString();
+              
+              /** Recupera nomi ristoranti */
+              this.ristorante = this.db.collection('ristoranti').doc(risto).valueChanges();
+              this.ristorante.subscribe(aa => {
+                data.ristoranteName = aa.nome; // funziona
+              });
+              return data;
+            });
+          });
+        
 
       } else {
         this.toast.create({

@@ -10,7 +10,7 @@ import { elementAttribute } from '@angular/core/src/render3/instructions';
 import moment from 'moment';
 import { VisualizzaRistorantiPage } from '../visualizza-ristoranti/visualizza-ristoranti';
 import { EmailValidator } from '@angular/forms';
-
+import { ModificaPiattoPage } from '../modifica-piatto/modifica-piatto';
 @IonicPage()
 @Component({
   selector: 'page-modifica-ristorante',
@@ -22,6 +22,7 @@ export class ModificaRistorantePage {
   ristoranti: any;
   piatto: any = [];
   staff: Observable<Profilo[]>;
+  menu: Observable<Menu[]>;
 
   constructor(
     public events: Events,
@@ -50,8 +51,17 @@ export class ModificaRistorantePage {
       const id = a.payload.doc.id;
 
       return {id, ...data};
-    })
-  })
+    });
+  });
+
+  this.menu = this.db.collection('menu', ref => ref.where('ristoranteID', '==', this.ristorante.id)).snapshotChanges().map(actions => {
+    return actions.map(a => {
+      const data = a.payload.doc.data() as Menu;
+      const id = a.payload.doc.id;
+
+      return {id, ...data};
+    });
+  });
 }
 
   private RistoDoc: AngularFirestoreDocument<Ristorante>;
@@ -120,6 +130,10 @@ export class ModificaRistorantePage {
     }
   }
 
+  modificaPiatto(piatto){
+    this.navCtrl.push(ModificaPiattoPage, {piatto: piatto});
+  }
+
 }
 interface Ristorante{
   nome: String;
@@ -132,4 +146,10 @@ interface Profilo {
   lName: string;
   id_ristorante: String;
   ruolo: String;
+}
+interface Menu{
+  ristoranteID: string; 
+  categoria: string; 
+  piatto: string;
+  prezzo: string;
 }

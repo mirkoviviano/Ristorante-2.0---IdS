@@ -55,6 +55,12 @@
       {{st.fName}} {{st.lName}} {{st.ruolo}}
     </ion-item>
   </ion-list>
+  <h3>Menu</h3>
+  <ion-list *ngFor="let men of menu | async">
+    <ion-item (click)="modificaPiatto(men)">
+      {{men.categoria}} - {{men.piatto}} {{men.prezzo}}€
+    </ion-item>
+  </ion-list>
   <ion-list>
     <h3>Elimina {{ristorante.nome}}</h3>
     <ion-item>

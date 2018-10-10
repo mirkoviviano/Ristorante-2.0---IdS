@@ -26,7 +26,7 @@ export class LogoutPage {
     }
 
     cancel() {
-        this.navCtrl.pop();
+        this.navCtrl.setRoot(HomePage);
     }
 
 }

@@ -63,7 +63,8 @@ export class ProfilePage {
     this.profile = this.db.collection('profiles').doc(this.userID)
       .update({
         'fName': profile.fName,
-        'lName': profile.lName
+        'lName': profile.lName,
+        'email': this.email
       })
       .then(() => {
         console.log('updated');

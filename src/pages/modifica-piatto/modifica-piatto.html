@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Modifica Piatto</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <h3>Piatto {{piatto.nome}}</h3>
+    <ion-item>
+      <ion-label fixed>Piatto</ion-label>
+      <ion-input type="text" [(ngModel)]="piatto.piatto"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Prezzo</ion-label>
+      <ion-input type="text" [(ngModel)]="piatto.prezzo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Categoria</ion-label>
+      <ion-select [(ngModel)]="piatto.categoria">
+        <ion-option value="primi">Primi</ion-option>
+        <ion-option value="secondo">Secondi</ion-option>
+        <ion-option value="bevande">Bevande</ion-option>
+      </ion-select>
+    </ion-item> 
+    <ion-item>
+      <button ion-button block outline (click)="modificaRistorante(ristorante)">Salva</button>
+    </ion-item>
+  </ion-list>
+</ion-content>
