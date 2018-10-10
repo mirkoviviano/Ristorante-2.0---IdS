@@ -108,16 +108,14 @@ export class ModificaRistorantePage {
     });
   }
 
-  private StaffDoc: AngularFirestoreDocument<Profilo>;
-  licenzia(staff){
-    this.staff.forEach(item => {
-      item.forEach(elem => {
-          if (elem['email'] == staff.email) {
-              this.StaffDoc = this.db.doc<Profilo>(`profiles/${elem['id']}`);
-              this.StaffDoc.update({ ruolo: "null", id_ristorante: "null" });
-          }
-      })
-    })
+  private ProfiloDoc: AngularFirestoreDocument<Profilo>;
+  licenzia(st) {
+    this.db.collection('profiles').doc(st.id).update({
+      id_ristorante: null,
+      ruolo: null
+    }).then(() => {
+      console.log('Licenziato');
+    });
   }
 
 }

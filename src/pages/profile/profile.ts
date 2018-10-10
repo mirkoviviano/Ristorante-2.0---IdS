@@ -60,9 +60,14 @@ export class ProfilePage {
   }
 
   ionViewDidLoad(){
-    this.user = this.db.collection('profiles', ref => ref.where('email', '==', this.email)).valueChanges();
-    this.fName = this.user.fName;
-    this.lName = this.user.lName;
+    this.profile = this.db.collection('profiles', ref => ref.where('email', '==', this.email)).snapshotChanges().map(actions => {
+      return actions.map(a => {
+        const data = a.payload.doc.data() as Profilo;
+        const id = a.payload.doc.id;
+
+        return {id, ...data};
+      })
+    });
   }
 
   createProfile(profile) {
@@ -90,4 +95,6 @@ interface Profilo {
     fName: string;
     lName: string;
     ruolo: String;
+    id_ristorante: string;
+    email: string; 
 }
