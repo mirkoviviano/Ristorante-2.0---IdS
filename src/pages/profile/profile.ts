@@ -40,49 +40,51 @@ export class ProfilePage {
       if (data && data.email && data.uid) {
         this.email = data.email;
         this.userID = data.uid.toString();
-      
+
         this.profile = this.db.collection('profiles').doc(data.uid).valueChanges().subscribe(prof => {
           console.log(prof);
-        });      
+        });
       }
     });
   }
 
-  ionViewDidLoad(){
+  ionViewDidLoad() {
     this.profile = this.db.collection('profiles', ref => ref.where('email', '==', this.email)).snapshotChanges().map(actions => {
       return actions.map(a => {
         const data = a.payload.doc.data() as Profilo;
         const id = a.payload.doc.id;
 
-        return {id, ...data};
+        return { id, ...data };
       })
     });
   }
 
   createProfile(profile) {
-        this.db.collection('profiles').doc(this.userID).set({
-            'fName': profile.fName,
-            'lName': profile.lName
-        }).then(() => {
-          this.toast.create({
-            message: 'Profilo aggiornato',
-            duration: 3000
-          }).present();
-        })
-        .catch(() => {
-          this.toast.create({
-            message: 'Errore nel salvataggio del profilo!',
-            duration: 3000
-          }).present();
+    this.profile = this.db.collection('profiles').doc(this.userID)
+      .update({
+        'fName': profile.fName,
+        'lName': profile.lName
+      })
+      .then(() => {
+        console.log('updated');
+      })
+    .catch((error) => {
+      this.db.collection('profiles').doc(this.userID)
+        .set({
+          'fName': profile.fName,
+          'lName': profile.lName,
+          'ruolo': 'USER',
+          'email': this.email
         });
+    });
   }
 
 }
 
 interface Profilo {
-    fName: string;
-    lName: string;
-    ruolo: String;
-    id_ristorante: string;
-    email: string; 
+  fName: string;
+  lName: string;
+  ruolo: String;
+  id_ristorante: string;
+  email: string;
 }
