@@ -63,9 +63,9 @@ export class MyApp {
 		this.pages = []
 		this.pages = [
 			{ title: 'Home', component: HomePage },
-			{ title: 'Logout', component: LogoutPage },
 			{ title: 'Profilo', component: ProfilePage },
-			{ title: 'Aggiungi ristorante', component: AggiungiRistorantePage }
+			{ title: 'Aggiungi ristorante', component: AggiungiRistorantePage },
+			{ title: 'Logout', component: LogoutPage }
 		];
 
 	}
@@ -82,11 +82,11 @@ export class MyApp {
 		this.pages = []
 		this.pages = [
 			{ title: 'Home', component: HomePage },
-			{ title: 'Logout', component: LogoutPage },
 			{ title: 'Profilo', component: ProfilePage },
 			{ title: 'Codice Staff', component: CodiceStaffPage },
 			{ title: 'Aggiungi ristorante', component: AggiungiRistorantePage },
-			{ title: 'Visualizza ristoranti', component: VisualizzaRistorantiPage }	
+			{ title: 'Visualizza ristoranti', component: VisualizzaRistorantiPage },
+			{ title: 'Logout', component: LogoutPage }
 		];
 	}
 
@@ -94,9 +94,9 @@ export class MyApp {
 		this.pages = []
 		this.pages = [
 			{ title: 'Home', component: HomePage },
-			{ title: 'Logout', component: LogoutPage },
 			{ title: 'Profilo', component: ProfilePage },
-			{ title: 'Visualizza ordini', component: VisualizzaOrdiniPage }	
+			{ title: 'Visualizza ordini', component: VisualizzaOrdiniPage },
+			{ title: 'Logout', component: LogoutPage }
 		];
 	}
 

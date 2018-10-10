@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth';
 // import { FirecloudService } from '../../services/firecloud';
 import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 @IonicPage()
 @Component({
@@ -28,6 +28,7 @@ export class EffettuaOrdiniPage {
   finalTotale: any = 0; 
   prenotazione: any; 
   getTotal: any;
+  ordiniConclusi: Observable<Ordine[]>;
 
   constructor(
     public events: Events,
@@ -74,6 +75,15 @@ export class EffettuaOrdiniPage {
               return {id, ...data};
             });
           });
+
+        this.ordiniConclusi = this.db.collection('ordini', ref => ref.where('concluso', '==', true)).snapshotChanges().map(actions=> {
+          return actions.map(a => {
+            const data = a.payload.doc.data() as Ordine;
+            const id = a.payload.doc.id;
+    
+            return {id, ...data};
+          });
+        });
 
         this.getTotal = this.db.collection('ordini', ref => ref.where('uid', '==', this.uid) && ref.where('ristoranteID', '==', this.prenotazione.ristorante))
             .valueChanges();
@@ -137,7 +147,8 @@ export class EffettuaOrdiniPage {
         prezzo: ordine.prezzo,
         piatto: ordine.piatto,
         consegnato: false,
-        tavolo: this.prenotazione.tavolo
+        tavolo: this.prenotazione.tavolo,
+        concluso: false
       }).then(() => {
         this.toast.create({
           message: 'Ordine inviato',
@@ -158,6 +169,18 @@ export class EffettuaOrdiniPage {
     return this.totale -= parseFloat(data);
   }
 
+  // private ordineDoc: AngularFirestoreDocument<Ordine>;
+  // pagaConto() {
+  //   this.ordiniConclusi.forEach(item => {
+  //     item.forEach(elem => {
+  //       console.log('elem', elem);
+  //       this.ordineDoc = this.db.doc<Ordine>(`ordini/${elem['id']}`);
+  //       this.ordineDoc.update({ concluso: true });
+  //     });
+  //   });
+  // }
+
+
 }
 interface Profilo {
   email: string;
@@ -171,6 +194,6 @@ interface Ordine {
   ristoranteID: string;
   totale: number;
   uid: string; 
-  
+  concluso: boolean;
   consegnato: boolean;
 }

@@ -57,4 +57,11 @@
     </ion-col>
   </ion-row>
 </ion-grid>
+
+<ion-grid>
+  <h3>Ordini conclusi</h3>
+  <ion-row *ngFor="let conclusi of ordiniConlusi | async">
+    {{conclusi.piatto}}
+  </ion-row>
+</ion-grid>
 </ion-content>

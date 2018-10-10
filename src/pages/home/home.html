@@ -19,7 +19,7 @@
 
 
 
-  <h2 *ngIf="profileRole == ''">Prenotazioni</h2>
+  <h2 *ngIf="isNotStaff == true">Prenotazioni</h2>
   <ion-grid *ngIf="profileRole == 'CAM'">
     <h2>Prenotazioni in attesa</h2>
     <ion-row *ngFor="let prenotazione of prenotazioniPendenti | async">

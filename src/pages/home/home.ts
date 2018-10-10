@@ -23,7 +23,8 @@ export class HomePage {
   prenotazioni: any;
   ristorante: any;
   isDirettore: boolean;
-  profileRole: any;
+  isNotStaff: boolean; 
+  profileRole: any; 
   prenotazioniPendenti: Observable<any[]>;
   ristoName: any;
 
@@ -50,6 +51,7 @@ export class HomePage {
 
           if(queriedItems.length > 0 && [0].hasOwnProperty('ruolo') == false) {
             this.events.publish('user:isNotStaff');
+            this.isNotStaff = true;
           }
           if(queriedItems.length > 0 &&
             queriedItems[0].ruolo == "DIR"){
@@ -78,11 +80,6 @@ export class HomePage {
             });
           }
 
-          
-
-          /*if(queriedItems.length < 0){
-            console.log('no item in queriedItems-');
-          }*/ 
 
         });
 
@@ -120,10 +117,6 @@ export class HomePage {
         }).present();
       }
     });
-  }
-
-  test(){
-
   }
   
   effettuaPrenotazione(ristorante) {
@@ -183,4 +176,5 @@ interface Prenotazione {
   ristorante: String;
   accettato: boolean;
   ristoranteName: String;
+  tavolo: string; 
 }

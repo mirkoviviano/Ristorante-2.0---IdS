@@ -18,6 +18,7 @@ import { ModificaRistorantePage } from '../modifica-ristorante/modifica-ristoran
 })
 export class VisualizzaOrdiniPage {
   ordiniPendenti: any;
+  ordiniConlusi: any;
   ordine: any;
 
   constructor(
@@ -38,7 +39,6 @@ export class VisualizzaOrdiniPage {
         return {id, ...data};
       });
     });
-
   }
 
   private OrdineDoc: AngularFirestoreDocument<Ordine>;
@@ -56,6 +56,8 @@ interface Ordine {
   ristoranteID: string;
   totale: number;
   uid: string; 
-  piatti: [];
+  categoria: string;
+  piatto: string;
+  prezzo: string; 
   consegnato: boolean;
 }

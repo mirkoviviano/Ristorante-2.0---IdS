@@ -19,6 +19,7 @@ export class AggiungiRistorantePage {
     userID: string;
     risto: any = {};
     profili: Observable<Profilo[]>;
+    ristor: Observable<Ristorante[]>;
 
     constructor(
         public events: Events,
@@ -33,24 +34,35 @@ export class AggiungiRistorantePage {
             if (data && data.email && data.uid) {
                 this.email = data.email;
                 this.userID = data.uid.toString();
-            }
-        });
+         
 
-        this.profili = this.db
-            .collection('profiles')
-            .snapshotChanges()
-            .map(actions => {
+            this.profili = this.db
+                .collection('profiles')
+                .snapshotChanges()
+                .map(actions => {
+                    return actions.map(a => {
+                        //Get document data
+                        const data = a.payload.doc.data() as Profilo;
+
+                        //Get document id
+                        const id = a.payload.doc.id;
+
+                        //Use spread operator to add the id to the document data
+                        return { id, ...data };
+                    });
+                });
+
+            this.ristor = this.db.collection('ristoranti', ref => ref.where('proprietario', '==', this.userID)).snapshotChanges().map(actions => {
                 return actions.map(a => {
-                    //Get document data
-                    const data = a.payload.doc.data() as Profilo;
-
-                    //Get document id
+                    const data = a.payload.doc.data() as Ristorante; 
                     const id = a.payload.doc.id;
 
-                    //Use spread operator to add the id to the document data
-                    return { id, ...data };
-                });
+                    return {id, ...data};
+                });         
             });
+        }
+    });
+        
     }
 
 

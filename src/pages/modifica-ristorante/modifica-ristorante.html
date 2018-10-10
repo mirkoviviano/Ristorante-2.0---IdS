@@ -49,7 +49,12 @@
       <button ion-button color="secondary" (click)="aggiungiPiatto(piatto)">Salva</button>
     </ion-item>
   </ion-list>
-
+  <h3>Staff</h3>
+  <ion-list *ngFor="let st of staff | async">
+    <ion-item (click)="licenzia(st)">
+      {{st.fName}} {{st.lName}} {{st.ruolo}}
+    </ion-item>
+  </ion-list>
   <ion-list>
     <h3>Elimina {{ristorante.nome}}</h3>
     <ion-item>

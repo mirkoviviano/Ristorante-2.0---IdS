@@ -9,6 +9,7 @@ import { Timestamp, Observable } from 'rxjs';
 import { elementAttribute } from '@angular/core/src/render3/instructions';
 import moment from 'moment';
 import { VisualizzaRistorantiPage } from '../visualizza-ristoranti/visualizza-ristoranti';
+import { EmailValidator } from '@angular/forms';
 
 @IonicPage()
 @Component({
@@ -20,6 +21,7 @@ export class ModificaRistorantePage {
   ristoranteID: any;
   ristoranti: any;
   piatto: any = [];
+  staff: Observable<Profilo[]>;
 
   constructor(
     public events: Events,
@@ -41,11 +43,16 @@ export class ModificaRistorantePage {
       return {id, ...data};
     });
   });
-}
 
-  ionViewDidLoad() {
-    console.log('ristorante', this.ristorante);
-  }
+  this.staff = this.db.collection('profiles', ref => ref.where('id_ristorante','==', this.ristorante.id)).snapshotChanges().map(actions => {
+    return actions.map( a => {
+      const data = a.payload.doc.data() as Profilo;
+      const id = a.payload.doc.id;
+
+      return {id, ...data};
+    })
+  })
+}
 
   private RistoDoc: AngularFirestoreDocument<Ristorante>;
   modificaRistorante(ristorante){
@@ -101,9 +108,28 @@ export class ModificaRistorantePage {
     });
   }
 
+  private StaffDoc: AngularFirestoreDocument<Profilo>;
+  licenzia(staff){
+    this.staff.forEach(item => {
+      item.forEach(elem => {
+          if (elem['email'] == staff.email) {
+              this.StaffDoc = this.db.doc<Profilo>(`profiles/${elem['id']}`);
+              this.StaffDoc.update({ ruolo: "null", id_ristorante: "null" });
+          }
+      })
+    })
+  }
+
 }
 interface Ristorante{
   nome: String;
   descrizione: String; 
   indirizzo: String;
+}
+interface Profilo {
+  email: string;
+  fName: string;
+  lName: string;
+  id_ristorante: String;
+  ruolo: String;
 }
