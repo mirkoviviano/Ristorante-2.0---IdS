@@ -28,7 +28,7 @@
 
   I tuoi ristoranti
   <ion-list *ngFor="let r of ristor | async">
-    <ion-item>
+    <ion-item (click)="modificaRistorante(r)">
       {{r.nome}} 
     </ion-item>
   </ion-list>

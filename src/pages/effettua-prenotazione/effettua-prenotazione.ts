@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth';
 import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { HomePage } from '../home/home';
 
 @IonicPage()
 @Component({
@@ -52,6 +53,7 @@ export class EffettuaPrenotazionePage {
         message: 'Prenotazione inviata!',
         duration: 3000
       }).present();
+      this.navCtrl.setRoot(HomePage);
     });
   }
 

@@ -10,6 +10,8 @@ import { AlertController } from 'ionic-angular';
 import { CreaProfiloPage } from '../crea-profilo/crea-profilo';
 import { EffettuaOrdiniPage } from '../effettua-ordini/effettua-ordini';
 import { EffettuaPrenotazionePage } from '../effettua-prenotazione/effettua-prenotazione';
+import { ProfilePage } from '../profile/profile';
+import { query } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'page-home',
@@ -47,9 +49,12 @@ export class HomePage {
       if (data && data.email && data.uid) {
         this.user = this.db.collection('profiles', ref => ref.where('email', '==', data.email)).valueChanges();
         this.user.subscribe(queriedItems => {
-          this.profileRole = queriedItems[0].ruolo;
-
-          if(queriedItems.length > 0 && [0].hasOwnProperty('ruolo') == false) {
+          
+          if(queriedItems.length > 0){
+            this.profileRole = queriedItems[0].ruolo;
+          }
+          
+          if(queriedItems.length > 0 && queriedItems[0].ruolo == "USER") {
             this.events.publish('user:isNotStaff');
             this.isNotStaff = true;
           }

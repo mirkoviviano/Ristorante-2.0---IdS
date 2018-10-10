@@ -65,8 +65,9 @@ export class EffettuaOrdiniPage {
               });
           });
 
-        console.log(this.prenotazione.ristorante);
-        this.inviati = this.db.collection('ordini', ref => ref.where('uid', '==', this.uid) && ref.where('ristoranteID', '==', this.prenotazione.ristorante) && ref.orderBy('consegnato'))
+        console.log(this.prenotazione);
+        this.inviati = this.db.collection('ordini', ref => ref.where('uid', '==', this.uid) 
+        && ref.where('ristoranteID', '==', this.prenotazione.ristorante) && ref.orderBy('consegnato'))
           .snapshotChanges().map(actions => {
             return actions.map(a => {
               const data = a.payload.doc.data() as Ordine;

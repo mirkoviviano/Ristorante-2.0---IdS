@@ -8,6 +8,7 @@ import { AlertController } from 'ionic-angular';
 import { Timestamp, Observable } from 'rxjs';
 import { elementAttribute } from '@angular/core/src/render3/instructions';
 import moment from 'moment';
+import { ModificaRistorantePage } from '../modifica-ristorante/modifica-ristorante'; 
 
 @IonicPage()
 @Component({
@@ -100,7 +101,10 @@ export class AggiungiRistorantePage {
 
     }
 
+    modificaRistorante(ristorante){
+        this.navCtrl.push(ModificaRistorantePage, {ristorante: ristorante});
     }
+}
     interface Profilo {
         email: string;
         fName: string;

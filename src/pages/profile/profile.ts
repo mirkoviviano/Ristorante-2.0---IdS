@@ -37,26 +37,15 @@ export class ProfilePage {
     private toast: ToastController
   ) {
     this.afAuth.authState.subscribe(data => {
-        if (data && data.email && data.uid) {
-            this.email = data.email;
-            this.userID = data.uid.toString();
-        }
+      if (data && data.email && data.uid) {
+        this.email = data.email;
+        this.userID = data.uid.toString();
+      
+        this.profile = this.db.collection('profiles').doc(data.uid).valueChanges().subscribe(prof => {
+          console.log(prof);
+        });      
+      }
     });
-    this.profili = this.db
-        .collection('profiles')
-        .snapshotChanges()
-        .map(actions => {
-            return actions.map(a => {
-                //Get document data
-                const data = a.payload.doc.data() as Profilo;
-
-                //Get document id
-                const id = a.payload.doc.id;
-
-                //Use spread operator to add the id to the document data
-                return { id, ...data };
-            });
-        });
   }
 
   ionViewDidLoad(){
@@ -73,8 +62,7 @@ export class ProfilePage {
   createProfile(profile) {
         this.db.collection('profiles').doc(this.userID).set({
             'fName': profile.fName,
-            'lName': profile.lName,
-            'email': this.email
+            'lName': profile.lName
         }).then(() => {
           this.toast.create({
             message: 'Profilo aggiornato',

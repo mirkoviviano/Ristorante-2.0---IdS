@@ -5,6 +5,7 @@ import { App, MenuController, Nav, Platform } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../services/auth';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 import { ProfilePage } from '../pages/profile/profile';
 import { SignupPage } from '../pages/signup/signup';
@@ -21,7 +22,8 @@ import { VisualizzaOrdiniPage } from '../pages/visualizza-ordini/visualizza-ordi
 export class MyApp {
 	pages;
 	rootPage;
-	wallets: any;
+	profile: any;
+
 	private app;
 	private platform;
 	private menu: MenuController;
@@ -32,6 +34,7 @@ export class MyApp {
 		menu: MenuController,
 		private statusBar: StatusBar,
 		private auth: AuthService,
+		public db: AngularFirestore
 	) {
 		this.menu = menu;
 		this.app = app;
@@ -104,10 +107,11 @@ export class MyApp {
 	initializeApp() {
 		this.auth.afAuth.authState.subscribe(data => {
 			if (data && data.email && data.uid) {
+				// this.profile = this.db.collection('profiles').doc(data.uid).update({
+				// 	'ruolo': 'USER',
+				// 	'email': data.email
+				// });
 				this.rootPage = HomePage;
-
-				/** Wallets */
-
 			} else {
 				this.rootPage = LoginPage;
 			}
@@ -119,4 +123,10 @@ export class MyApp {
 		// we wouldn't want the back button to show in this scenario
 		this.nav.setRoot(page.component);
 	}
+}
+interface Profilo{
+	fName: string; 
+	lName: string;
+	email: string; 
+	ruolo: string; 
 }
