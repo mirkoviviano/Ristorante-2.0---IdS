@@ -28,10 +28,18 @@ export class ModificaPiattoPage {
     public alertCtrl: AlertController,
     private toast: ToastController,
     private navPar: NavParams
-) {
-  this.piatto = navPar.get("piatto");
-}
+  ) {
+    this.piatto = navPar.get("piatto");
+  }
 
-  
+  modificaPiatto(piatto){
+    this.db.collection('menu').doc(piatto.id).update({
+      'piatto': piatto.piatto,
+      'prezzo': piatto.prezzo,
+      'categoria': piatto.categoria
+    }).then(() => {
+      console.log('piatto aggiornato');
+    })
+  }
 
 }

@@ -35,7 +35,7 @@ export class ModificaRistorantePage {
     private navPar: NavParams
 ) {
   this.ristorante = navPar.get("ristorante");
-
+  console.log(this.ristorante)
   this.ristoranti = this.db.collection('ristoranti').snapshotChanges().map(actions => {
     return actions.map(a => {
       const data = a.payload.doc.data() as Ristorante;
